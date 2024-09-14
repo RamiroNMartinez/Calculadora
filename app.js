@@ -33,11 +33,15 @@ function valueLastChar(){
         return 0;
     else{
         char = char.slice(-1);
-        const op=['+','-','/','x','='];
+        const op=['+','-','/','x'];
         if(op.includes(char))
             return 1;
-        else
-            return 2;
+        else{
+            if(char == '=')
+                return 2;
+            else 
+                return 3;
+        }
     }
 }
 
