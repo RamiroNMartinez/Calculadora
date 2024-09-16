@@ -1,5 +1,5 @@
 const operacion = document.getElementById('operacion');
-const resultado = document.getElementById('resultado');
+const display = document.getElementById('resultado');
 const btn0 = document.getElementById('cero');
 const btn1 = document.getElementById('uno');
 const btn2 = document.getElementById('dos');
@@ -17,31 +17,31 @@ const btnMul = document.getElementById('multiplicacion');
 const btnBkS = document.getElementById('backspace');
 const btnResult = document.getElementById('solve');
 
+let resultado = 0;
+let aux = 0;
+
 function agregarADisplay(elemento){
-    let valor = isNaN(elemento.textContent) ? elemento.textContent : parseFloat(elemento.textContent);
+    let valor = parseInt(elemento.textContent);
     if(evaluaOverflow())
-        resultado.value += valor;
+        display.value += valor;
 }
 
 function evaluaOverflow(){ //evalúa que no se superen los 10 caracteres de ingreso
-    return resultado.value.length<10;
+    return display.value.length<10;
 }
 
-function valueLastChar(){
+function LastCharReview(simbolo){
     let char = operacion.textContent;
-    if(char.length == 0)
-        return 0;
+    
+    char = char.slice(-1);
+    const op=['+','-','/','x'];
+    if(op.includes(char))
+        return executeLCh0();
     else{
-        char = char.slice(-1);
-        const op=['+','-','/','x'];
-        if(op.includes(char))
-            return 1;
-        else{
-            if(char == '=')
-                return 2;
-            else 
-                return 3;
-        }
+        if(char == '=')
+            return executeLCh1();
+        else 
+            return executeLCh2(simbolo);
     }
 }
 
@@ -50,7 +50,27 @@ function reemplazo(elemento){
     operacion.textContent = operacion.textContent.replaceAll(char,elemento.textContent);
 }
 
+function agregarAOperacion(operatoria){
+    operacion.textContent = resultado +' '+ operatoria;
+}
 
+
+function executeLCh0(){
+    resultado= display.value;
+}
+
+function executeLCh1(){
+    
+}
+
+function executeLCh2(){
+
+}
+
+
+function preparaDisplay(){
+
+}
 
 function suma(a,b){
     return a+b;
@@ -81,17 +101,18 @@ btn8.addEventListener("click",()=> {agregarADisplay(btn8)});
 btn9.addEventListener("click",()=> {agregarADisplay(btn9)});
 
 btnBkS.addEventListener("click",()=> {  
-    let value = resultado.value;
+    let value = display.value;
     let largo = value.length;
     if(largo>0){
         value = value.slice(0, largo-1);
-        resultado.value=value;
+        display.value=value;
     }
 });
 
 btnSuma.addEventListener("click",()=>{
-    
-    
+    LastCharReview(btnSuma.textContent); 
+    agregarAOperacion(btnSuma.textContent);
+    preparaDisplay();
 });
 btnDiv.addEventListener("click",()=>{});
 btnMul.addEventListener("click",()=>{});
@@ -99,17 +120,23 @@ btnResta.addEventListener("click",()=>{});
 btnResult.addEventListener("click",()=>{});
 
 
-/* -- Borra el último caracter no importa dónde se encuentre el cursor -- */
+/* -- Borra todo resultado, no importa dónde se encuentre el cursor -- */
 document.addEventListener("keydown",(e)=>{
-    // if(evaluaOverflow())
-    //     resultado.setAttribute("readOnly", true);
-    // else
-    //     resultado.removeAttribute("readOnly");
     if(e.key==='Escape'){
-        resultado.value='';
+        display.value='';
         operacion.textContent='';
-        resultado.focus();
+        display.focus();
+        resultado = 0;
+        aux = 0;
     }
 
 });
 
+display.addEventListener('input',()=> {
+    if(display.value.length >= 10){
+        display.value = display.value.slice(0,10); //no se produce el mismo efecto con los botones
+    }
+});
+
+
+//QUEDA PENDIENTE DE TERMINAR
