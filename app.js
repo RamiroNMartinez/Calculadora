@@ -1,26 +1,19 @@
+// const btnSuma = document.getElementById('suma');
+// const btnResta = document.getElementById('resta');
+// const btnDiv = document.getElementById('division');
+// const btnMul = document.getElementById('multiplicacion');
+// const btnResult = document.getElementById('solve');
+
 const operacion = document.getElementById('operacion');
 const resultado = document.getElementById('resultado');
-const btn0 = document.getElementById('cero');
-const btn1 = document.getElementById('uno');
-const btn2 = document.getElementById('dos');
-const btn3 = document.getElementById('tres');
-const btn4 = document.getElementById('cuatro');
-const btn5 = document.getElementById('cinco');
-const btn6 = document.getElementById('seis');
-const btn7 = document.getElementById('siete');
-const btn8 = document.getElementById('ocho');
-const btn9 = document.getElementById('nueve');
-const btnSuma = document.getElementById('suma');
-const btnResta = document.getElementById('resta');
-const btnDiv = document.getElementById('division');
-const btnMul = document.getElementById('multiplicacion');
 const btnBkS = document.getElementById('backspace');
-const btnResult = document.getElementById('solve');
+let btnNum = document.querySelectorAll('button'); // selecciona por elemento HTML
+const operadores = ['+','-','/','x'];
+const numeros = ['1','2','3','4','5','6','7','8','9','0'];
 
-function agregarADisplay(elemento){
-    let valor = isNaN(elemento.textContent) ? elemento.textContent : parseFloat(elemento.textContent);
+function agregarADisplay(contenido){
     if(evaluaOverflow())
-        resultado.value += valor;
+        resultado.value += contenido;
 }
 
 function evaluaOverflow(){ //evalúa que no se superen los 10 caracteres de ingreso
@@ -33,8 +26,7 @@ function valueLastChar(){
         return 0;
     else{
         char = char.slice(-1);
-        const op=['+','-','/','x'];
-        if(op.includes(char))
+        if(operadores.includes(char))
             return 1;
         else{
             if(char == '=')
@@ -51,36 +43,21 @@ function reemplazo(elemento){
 }
 
 
+Array.from(btnNum).forEach(button => {
+    button.addEventListener('click',(e)=>{
+        let contenido = e.target.textContent;
 
-function suma(a,b){
-    return a+b;
-}
+        if(numeros.includes(contenido)){
+            agregarADisplay(contenido);
+        }else {
 
-function resta(a,b){
-    return a-b;
-}
+        }
 
-function multiplicacion(a,b){
-    return a*b;
-}
+    })
+    
+});
 
-function division(a,b){  //realiza división entera? 
-    return a/b;
-}
-
-
-btn0.addEventListener("click",()=> {agregarADisplay(btn0)});
-btn1.addEventListener("click",()=> {agregarADisplay(btn1)});
-btn2.addEventListener("click",()=> {agregarADisplay(btn2)});
-btn3.addEventListener("click",()=> {agregarADisplay(btn3)});
-btn4.addEventListener("click",()=> {agregarADisplay(btn4)});
-btn5.addEventListener("click",()=> {agregarADisplay(btn5)});
-btn6.addEventListener("click",()=> {agregarADisplay(btn6)});
-btn7.addEventListener("click",()=> {agregarADisplay(btn7)});
-btn8.addEventListener("click",()=> {agregarADisplay(btn8)});
-btn9.addEventListener("click",()=> {agregarADisplay(btn9)});
-
-btnBkS.addEventListener("click",()=> {  
+btnBkS.addEventListener("click",()=> {  //borra el último caracter
     let value = resultado.value;
     let largo = value.length;
     if(largo>0){
@@ -89,26 +66,32 @@ btnBkS.addEventListener("click",()=> {
     }
 });
 
-btnSuma.addEventListener("click",()=>{
-    
-    
-});
-btnDiv.addEventListener("click",()=>{});
-btnMul.addEventListener("click",()=>{});
-btnResta.addEventListener("click",()=>{});
-btnResult.addEventListener("click",()=>{});
+// btnSuma.addEventListener("click",()=>{
+//     valueLastChar();    
+// });
+// btnDiv.addEventListener("click",()=>{});
+// btnMul.addEventListener("click",()=>{});
+// btnResta.addEventListener("click",()=>{});
+// btnResult.addEventListener("click",()=>{});
 
 
-/* -- Borra el último caracter no importa dónde se encuentre el cursor -- */
-document.addEventListener("keydown",(e)=>{
-    // if(evaluaOverflow())
-    //     resultado.setAttribute("readOnly", true);
-    // else
-    //     resultado.removeAttribute("readOnly");
+
+document.addEventListener("keydown",(e)=>{  //controlo la funcionalidad de las teclas para evitar indicar "error"
+
+    const aceptados = ['1','2','3','4','5','6','7','8','9','0','+','-','/','x','*','Backspace'];
     if(e.key==='Escape'){
         resultado.value='';
         operacion.textContent='';
         resultado.focus();
+    }else{
+        if(aceptados.includes(e.key)){
+            if(!evaluaOverflow()){
+                resultado.blur();
+            }
+        }
+        else{
+            e.preventDefault();
+        }
     }
 
 });
