@@ -8,7 +8,7 @@ body {
 
 .contenedor {
   background-color: #302f35;
-  width: 30%;
+  width: 415px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -23,8 +23,12 @@ body {
 
 .operacion {
   margin: 0;
-  font-size: 2rem;
-  height: 40%;
+  font-family: sans-serif;
+  padding-top: 10rem;
+  padding-right: 1rem;
+  font-size: 1.5rem;
+  text-align: end;
+  color: #86858b;
 }
 
 .resultado {
@@ -32,10 +36,9 @@ body {
   background-color: transparent;
   width: 95%;
   margin: 0;
-  padding: 0;
   border-color: transparent;
   font-size: 3rem;
-  height: 60%;
+  height: 55%;
   color: white;
   outline: none;
   appearance: unset;
