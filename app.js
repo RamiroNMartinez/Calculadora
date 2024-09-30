@@ -47,15 +47,15 @@ Array.from(btnNum).forEach(button => {
                 console.log('caso 1 ');
             }
             else{
-                console.log('otro');
-                let char = string.slice(-1);
+                let char = string.slice(-1); 
                 console.log(char);
                 if(evaluarCeros(display) && operadores.includes(char)){
                     string.replaceAll(char,contenido);
                 }
                 else{
-                    
+                    console.log(display); // acá la cagué, no sé que hacer acá
                     string.concat(display);
+                    console.log('string:',string);
                     string.replaceAll('x','*');
                     registroValor = eval(string);
                     resultado.value='';
